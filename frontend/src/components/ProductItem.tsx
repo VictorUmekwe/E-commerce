@@ -15,11 +15,11 @@ const ProductItem = ({ product }: { product: Product }) => {
           <Rating rating={product.rating} numReviews={product.numReviews} />
           <Card.Text>${product.price}</Card.Text>
           {product.countInStock === 0 ? (
-            <Button variant="light" disabled className=" w-100">
+            <Button variant="light" disabled className=" w-100 ">
               Out of stock
             </Button>
           ) : (
-            <Button className=" w-100">Add to cart</Button>
+            <Button className=" w-100 ">Add to cart</Button>
           )}
         </Card.Body>
       </Link>
