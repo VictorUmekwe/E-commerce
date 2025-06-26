@@ -21,6 +21,11 @@ app.get('/api/products', (req: Request, res: Response) => {
     res.send(sampleProducts);
 });
 
+// api for single product
+app.get('/api/products/:slug', (req: Request, res: Response) => {
+   res.json(sampleProducts.find((product) => product.slug === req.params.slug))
+})
+
 app.listen(PORT, () => {
     console.log(`Server is running on port http://localhost:${PORT}`);
 });
