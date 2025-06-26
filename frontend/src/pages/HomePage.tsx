@@ -1,24 +1,37 @@
 import { Col, Row } from "react-bootstrap";
-import { sampleProducts } from "../data";
-import { Link } from "react-router-dom";
+import { useGetProductsQuery } from "../features/product/productApi";
+import {toast } from "react-hot-toast";
+import {type Product } from "../types/Product";
+import { useEffect } from "react";
+import LoadingBox from "../components/LoadingBox";
+import ProductItem from "../components/ProductItem";
+
+
+
 const HomePage = () => {
+
+    const { data: products, isLoading, error } = useGetProductsQuery([]);
+  useEffect(() => {
+    
+
+    if(error) {
+      toast.error("Failed to load products. Please try again later.");
+    }
+  }, [error])
+
+       if(isLoading) {
+        return(
+            <div className="text-center my-5 display-3" >
+               <LoadingBox/>
+            </div>
+        )
+    }
+
   return (
     <Row>
-      {sampleProducts.map((product) => (
-        <Col key={product.slug} className="card" sm={6} md={4} lg={3}>
-          <Link to={`/product/${product.slug}`}>
-            <img
-              src={product.image}
-              alt={product.name}
-              className="product-image"
-            />
-            <h2>{product.name}</h2>
-            <p>Price: ${product.price}</p>
-            <p>Brand: {product.brand}</p>
-            <p>Category: {product.category}</p>
-            <p>Rating: {product.rating} stars</p>
-            <p>{product.description}</p>
-          </Link>
+      {products?.map((product:Product) => (
+        <Col key={product.slug}  sm={6} md={4} lg={3}>
+         <ProductItem product={product}/>
         </Col>
       ))}
     </Row>
