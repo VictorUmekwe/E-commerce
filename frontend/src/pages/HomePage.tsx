@@ -1,7 +1,6 @@
 import { Col, Row } from "react-bootstrap";
 import { useGetProductsQuery } from "../features/product/productApi";
 import { toast } from "react-hot-toast";
-import { type Product } from "../types/Product";
 import { useEffect } from "react";
 import LoadingBox from "../components/LoadingBox";
 import ProductItem from "../components/ProductItem";
@@ -25,7 +24,7 @@ const HomePage = () => {
 
   return (
     <Row>
-      {products?.map((product: Product) => (
+      {products?.map((product) => (
         <Col key={product.slug} sm={6} md={4} lg={3}>
           <ProductItem product={product} />
         </Col>
