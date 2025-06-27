@@ -13,7 +13,7 @@ const ProductItem = ({ product }: { product: Product }) => {
 
       <Card.Body className="d-flex flex-column">
         
-        <Link to={`/product/${product.slug}`} className="text-decoration-none text-dark">
+        <Link to={`/product/${product.slug}`} className="text-decoration-none ">
           <Card.Title >{product.name}</Card.Title>
         </Link>
 

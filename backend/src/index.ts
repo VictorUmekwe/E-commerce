@@ -3,6 +3,7 @@ import { sampleProducts } from './data';
 import 'dotenv/config';
 import cors from 'cors'
 import morgan from 'morgan'
+import { connectDB } from './config/connectDB';
 
 
 const app = express();
@@ -26,6 +27,10 @@ app.get('/api/products/:slug', (req: Request, res: Response) => {
    res.json(sampleProducts.find((product) => product.slug === req.params.slug))
 })
 
-app.listen(PORT, () => {
+
+connectDB().then(()=>{
+    app.listen(PORT, () => {
     console.log(`Server is running on port http://localhost:${PORT}`);
 });
+
+})
