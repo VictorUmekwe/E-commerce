@@ -6,6 +6,7 @@ import morgan from 'morgan'
 import { connectDB } from './config/connectDB';
 import { productRoute } from './routes/ProductRoute';
 import { errorHandler, notFound } from './middleware/errorMiddleware';
+import { seedRouter } from './routes/seedRoutes';
 
 
 const app = express();
@@ -20,6 +21,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan('dev'));
 app.use('/api/products', productRoute)
+app.use('/api/seed', seedRouter)
+
 app.use(notFound)
 app.use(errorHandler)
 

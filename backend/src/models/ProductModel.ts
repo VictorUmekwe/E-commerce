@@ -10,6 +10,7 @@ import mongoose, { Schema } from 'mongoose'
   description: string;
   price: number;
   countInStock: number;
+  rating: number;
   numReviews: number;
 
 }
@@ -23,6 +24,7 @@ const productSchema = new Schema<IProduct>({
   description:{type: String, required: true},
   price:{type: Number, required: true, default: 0},
   countInStock:{type: Number, required: true, default: 0},
+  rating: {type: Number},
   numReviews:{type: Number},
 },{timestamps: true})
 
