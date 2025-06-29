@@ -47,6 +47,7 @@ const cartSlice = createSlice({
     },
     clearCart: (state) => {
       state.cartItems = [];
+      localStorage.setItem("cartItems", JSON.stringify([]));
     },
     saveShippingAddress: (state, action: PayloadAction<ShippingAddress>) => {
       state.shippingAddress = action.payload;
@@ -56,9 +57,29 @@ const cartSlice = createSlice({
       state.paymentMethod = action.payload;
       localStorage.setItem("paymentMethod", action.payload);
     },
+    calculatePrices: (state) => {
+      state.itemsPrice = Number(
+        state.cartItems
+          .reduce((sum, item) => sum + item.price * item.quantity, 0)
+          .toFixed(2)
+      );
+
+      state.shippingPrice = state.itemsPrice > 100 ? 0 : 10;
+      state.taxPrice = Number((0.15 * state.itemsPrice).toFixed(2));
+      state.totalPrice = Number(
+        (state.itemsPrice + state.shippingPrice + state.taxPrice).toFixed(2)
+      );
+    },
   },
 });
 
-export const {addItem,removeItem,clearCart,saveShippingAddress,savePaymentMethod} = cartSlice.actions
+export const {
+  addItem,
+  removeItem,
+  clearCart,
+  saveShippingAddress,
+  savePaymentMethod,
+  calculatePrices,
+} = cartSlice.actions;
 
 export default cartSlice.reducer;
