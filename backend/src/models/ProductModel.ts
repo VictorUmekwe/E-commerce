@@ -1,7 +1,7 @@
 
 import mongoose, { Schema } from 'mongoose'
 
- export interface IProduct {
+  interface IProduct {
   name:string;
   slug: string;
   image: string;

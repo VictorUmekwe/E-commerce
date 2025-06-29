@@ -1,16 +1,22 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice,type PayloadAction } from "@reduxjs/toolkit";
+
+type ThemeMode = "light" | "dark";
 
 type ThemeState = {
-  mode: "light" | "dark";
+  mode: ThemeMode;
+};
+
+const getInitialMode = (): ThemeMode => {
+  const storedMode = localStorage.getItem("mode") as ThemeMode | null;
+  if (storedMode) return storedMode;
+
+  return window.matchMedia("(prefers-color-scheme: dark)").matches
+    ? "dark"
+    : "light";
 };
 
 const initialState: ThemeState = {
-  mode:
-    (localStorage.getItem("mode") as "light" | "dark") ??
-    (window.matchMedia &&
-    window.matchMedia("(prefers-color-scheme: dark)").matches
-      ? "dark"
-      : "light"),
+  mode: getInitialMode(),
 };
 
 const themeSlice = createSlice({
@@ -21,7 +27,7 @@ const themeSlice = createSlice({
       state.mode = state.mode === "light" ? "dark" : "light";
       localStorage.setItem("mode", state.mode);
     },
-    setTheme: (state, action) => {
+    setTheme: (state, action: PayloadAction<ThemeMode>) => {
       state.mode = action.payload;
       localStorage.setItem("mode", action.payload);
     },
