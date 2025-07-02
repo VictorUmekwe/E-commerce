@@ -41,7 +41,7 @@ const cartSlice = createSlice({
       localStorage.setItem("cartItems", JSON.stringify(state.cartItems));
 
       
-      cartSlice.caseReducers.calculatePrices(state);
+    
     },
 
     removeItem: (state, action: PayloadAction<CartItem>) => {
