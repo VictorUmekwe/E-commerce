@@ -3,10 +3,11 @@ import { Link, Outlet } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "./hooks/hooks";
 import { toggleTheme } from "./features/theme/themeSlice";
 import { useEffect } from "react";
+import { Toaster } from "react-hot-toast";
 
 const App = () => {
   const mode = useAppSelector((state) => state.theme.mode);
-  const cart = useAppSelector((state) => state.cart)
+  const cart = useAppSelector((state) => state.cart);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -18,10 +19,14 @@ const App = () => {
   };
   return (
     <div className="d-flex flex-column vh-100">
+      <Toaster position="top-center" reverseOrder={false} />
+
       <header>
         <Navbar bg={mode} variant={mode} expand="lg">
           <Container>
-            <Navbar.Brand>Bahddest Collections</Navbar.Brand>
+            <Link to="/" className=" fw-bolder text-decoration-none">
+              <Navbar.Brand>Bahddest Collections</Navbar.Brand>
+            </Link>
           </Container>
           <Nav>
             <Button variant={mode} onClick={handleToggle}>
@@ -30,8 +35,8 @@ const App = () => {
             <Link className=" nav-link" to="/cart">
               Cart
               {cart.cartItems.length > 0 && (
-                <Badge pill bg='danger'>
-                  {cart.cartItems.reduce((a,c) => a + c.quantity, 0)}
+                <Badge pill bg="danger">
+                  {cart.cartItems.reduce((a, c) => a + c.quantity, 0)}
                 </Badge>
               )}
             </Link>

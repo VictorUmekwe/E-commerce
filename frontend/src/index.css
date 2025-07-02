@@ -18,4 +18,9 @@
 
 img.large{
   max-width: 100%;// prevents horizontal scrolling if image is too big
+
+}
+
+img.thumbnail{
+  height: 80px;
 }

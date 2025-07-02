@@ -37,26 +37,40 @@ const cartSlice = createSlice({
             item._id === newItem._id ? newItem : item
           )
         : [...state.cartItems, newItem];
+
       localStorage.setItem("cartItems", JSON.stringify(state.cartItems));
+
+      
+      cartSlice.caseReducers.calculatePrices(state);
     },
+
     removeItem: (state, action: PayloadAction<CartItem>) => {
       state.cartItems = state.cartItems.filter(
         (item) => item._id !== action.payload._id
       );
+
       localStorage.setItem("cartItems", JSON.stringify(state.cartItems));
+
+      
+      
     },
+
     clearCart: (state) => {
       state.cartItems = [];
       localStorage.setItem("cartItems", JSON.stringify([]));
+    
     },
+
     saveShippingAddress: (state, action: PayloadAction<ShippingAddress>) => {
       state.shippingAddress = action.payload;
       localStorage.setItem("shippingAddress", JSON.stringify(action.payload));
     },
+
     savePaymentMethod: (state, action: PayloadAction<string>) => {
       state.paymentMethod = action.payload;
       localStorage.setItem("paymentMethod", action.payload);
     },
+
     calculatePrices: (state) => {
       state.itemsPrice = Number(
         state.cartItems
