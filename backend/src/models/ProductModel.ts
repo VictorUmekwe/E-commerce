@@ -1,7 +1,8 @@
 
 import mongoose, { Schema } from 'mongoose'
 
-  interface IProduct {
+ export interface IProduct {
+  _id?:string;
   name:string;
   slug: string;
   image: string;
