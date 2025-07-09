@@ -2,10 +2,30 @@ import { createSlice } from "@reduxjs/toolkit";
 import type { Cart, CartItem, ShippingAddress } from "../../types/Cart";
 import { type PayloadAction } from "@reduxjs/toolkit";
 
+// math helper function to calculate all the totals
+const calculateTotals = (items: CartItem[]) => {
+  const itemsPrice = Number(
+    items.reduce((sum, item) => sum + item.price * item.quantity, 0).toFixed(2)
+  );
+  const shippingPrice = itemsPrice > 100 ? 0 : 10;
+  const taxPrice = Number((0.15 * itemsPrice).toFixed(2));
+  const totalPrice = Number((itemsPrice + shippingPrice + taxPrice).toFixed(2));
+
+  return { itemsPrice, shippingPrice, taxPrice, totalPrice };
+};
+
+
+const cartItemsFromStorage: CartItem[] = localStorage.getItem("cartItems")
+  ? JSON.parse(localStorage.getItem("cartItems")!)
+  : [];
+
+
+const { itemsPrice, shippingPrice, taxPrice, totalPrice } =
+  calculateTotals(cartItemsFromStorage);
+
+
 const initialState: Cart = {
-  cartItems: localStorage.getItem("cartItems")
-    ? JSON.parse(localStorage.getItem("cartItems")!)
-    : [],
+  cartItems: cartItemsFromStorage,
   shippingAddress: localStorage.getItem("shippingAddress")
     ? JSON.parse(localStorage.getItem("shippingAddress")!)
     : {
@@ -16,11 +36,11 @@ const initialState: Cart = {
         postalCode: "",
       },
   paymentMethod: localStorage.getItem("paymentMethod") || "PayPal",
-  itemsPrice: 0,
-  shippingPrice: 0,
-  taxPrice: 0,
-  totalPrice: 0,
-};
+  itemsPrice,
+  shippingPrice,
+  taxPrice,
+  totalPrice,
+}
 
 const cartSlice = createSlice({
   name: "cart",
@@ -40,8 +60,8 @@ const cartSlice = createSlice({
 
       localStorage.setItem("cartItems", JSON.stringify(state.cartItems));
 
-      
-    
+      const totals = calculateTotals(state.cartItems);
+      Object.assign(state, totals);
     },
 
     removeItem: (state, action: PayloadAction<CartItem>) => {
@@ -51,14 +71,16 @@ const cartSlice = createSlice({
 
       localStorage.setItem("cartItems", JSON.stringify(state.cartItems));
 
-      
-      
+      const totals = calculateTotals(state.cartItems);
+      Object.assign(state, totals);
     },
 
     clearCart: (state) => {
       state.cartItems = [];
       localStorage.setItem("cartItems", JSON.stringify([]));
-    
+
+      const totals = calculateTotals(state.cartItems);
+      Object.assign(state, totals);
     },
 
     saveShippingAddress: (state, action: PayloadAction<ShippingAddress>) => {
@@ -72,17 +94,8 @@ const cartSlice = createSlice({
     },
 
     calculatePrices: (state) => {
-      state.itemsPrice = Number(
-        state.cartItems
-          .reduce((sum, item) => sum + item.price * item.quantity, 0)
-          .toFixed(2)
-      );
-
-      state.shippingPrice = state.itemsPrice > 100 ? 0 : 10;
-      state.taxPrice = Number((0.15 * state.itemsPrice).toFixed(2));
-      state.totalPrice = Number(
-        (state.itemsPrice + state.shippingPrice + state.taxPrice).toFixed(2)
-      );
+      const totals = calculateTotals(state.cartItems);
+      Object.assign(state, totals);
     },
   },
 });
