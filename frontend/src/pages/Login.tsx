@@ -24,7 +24,7 @@ const LoginPage = () => {
       const user = await login({ email, password }).unwrap();
       dispatch(setCredentials(user));
       toast.success("Logged in successfully");
-      navigate(redirect || "/");
+      navigate(redirect);
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       toast.error(err?.data?.message || "Invalid credentials");
@@ -43,23 +43,23 @@ const LoginPage = () => {
 
   return (
   
-    <Container className="mt-5" style={{ maxWidth: "500px" }}>
-      <h2 className="mb-3 fw-bold">Sign In</h2>
-      <Form onSubmit={submitHandler} className="card p-3">
-        <Form.Group className="mb-3">
+    <Container className="mt-5" style={{ maxWidth: "600px" }}>
+      <h2 className="my-3 fw-bold">Sign In</h2>
+      <Form onSubmit={submitHandler} className="card p-3 shadow">
+        <Form.Group className="mb-3" controlId="email">
           <Form.Label>Email</Form.Label>
           <Form.Control type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
         </Form.Group>
 
-        <Form.Group className="mb-3">
+        <Form.Group className="mb-3" controlId="password">
           <Form.Label>Password</Form.Label>
           <Form.Control type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
         </Form.Group>
 
-        <Button type="submit" variant="primary" className="w-100 mt-2">
+        <Button type="submit" variant="primary" className="w-100 mt-2"  disabled={isLoading}>
           Login
         </Button>
-        <p className="text-sm-center mt-3">Don't have an account? <Link to="/register">Register</Link></p>
+        <p className="text-sm-center mt-3">Don't have an account? <Link to={`/register?redirect=${redirect}`}>Register</Link></p>
       </Form>
     </Container>
   );

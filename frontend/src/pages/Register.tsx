@@ -35,7 +35,7 @@ const Register = () => {
         const user = await register(formData).unwrap()
         dispatch(setCredentials(user));
         toast.success('User registered')
-        navigate( redirect || '/')
+        navigate( redirect)
      // eslint-disable-next-line @typescript-eslint/no-explicit-any
      } catch (err: any) {
         toast.error(err?.data?.message || 'Invalid credentials')
@@ -54,10 +54,10 @@ const Register = () => {
         }
 
   return (
-    <Container className="mt-5" style={{ maxWidth: "500px" }}>
-      <h2 className="mb-3 fw-bold">Register</h2>
-      <Form onSubmit={submitHandler} className="card p-3">
-        <Form.Group className="mb-3">
+    <Container className="mt-5 " style={{ maxWidth: "600px" }}>
+      <h2 className="my-3 fw-bold">Register</h2>
+      <Form onSubmit={submitHandler} className="card p-3 shadow">
+        <Form.Group className="mb-3" controlId="name">
           <Form.Label>Name</Form.Label>
           <Form.Control
             type="text"
@@ -69,7 +69,7 @@ const Register = () => {
           />
         </Form.Group>
 
-        <Form.Group className="mb-3">
+        <Form.Group className="mb-3" controlId="email">
           <Form.Label>Email</Form.Label>
           <Form.Control
             type="email"
@@ -81,7 +81,7 @@ const Register = () => {
           />
         </Form.Group>
 
-        <Form.Group className="mb-3">
+        <Form.Group className="mb-3" controlId="password">
           <Form.Label>Password</Form.Label>
           <Form.Control
             type="password"
@@ -97,7 +97,7 @@ const Register = () => {
           Register
         </Button>
         <p className="text-sm-center pt-3">
-          Already have an account? <Link to="/signin">Sign in</Link>
+          Already have an account? <Link to={`/signin?redirect=${redirect}`}>Sign in</Link>
         </p>
       </Form>
     </Container>
