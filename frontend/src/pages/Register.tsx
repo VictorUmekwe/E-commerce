@@ -3,26 +3,25 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useRegisterMutation } from "../features/auth/authApi";
 import { setCredentials } from "../features/auth/authSlice";
-import { useAppDispatch,useAppSelector } from "../hooks/hooks";
+import { useAppDispatch, useAppSelector } from "../hooks/hooks";
 import toast from "react-hot-toast";
 import LoadingBox from "../components/LoadingBox";
 
-
 const Register = () => {
-    const dispatch = useAppDispatch()
-    const {user} = useAppSelector((state) => state.auth)
-    const navigate = useNavigate()
-     const {search} = useLocation()
-     const redirectInUrl = new URLSearchParams(search).get('redirect')
-     const redirect = redirectInUrl ? redirectInUrl : '/'
+  const dispatch = useAppDispatch();
+  const { user } = useAppSelector((state) => state.auth);
+  const navigate = useNavigate();
+  const { search } = useLocation();
+  const redirectInUrl = new URLSearchParams(search).get("redirect");
+  const redirect = redirectInUrl ? redirectInUrl : "/";
 
-       useEffect(() => {
-    if(user){
-      navigate(redirect)
+  useEffect(() => {
+    if (user) {
+      navigate(redirect);
     }
-  }, [navigate, redirect, user])
+  }, [navigate, redirect, user]);
 
-    const [register, {isLoading} ] = useRegisterMutation()
+  const [register, { isLoading }] = useRegisterMutation();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -32,40 +31,33 @@ const Register = () => {
 
   const { name, email, password, confirmPassword } = formData;
 
-  
-
   const submitHandler = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if(formData.password.length < 6){
-    toast.error('Password cannot be less than 6 characters')
-  }else if(password !== confirmPassword) {
-    toast.error('Passwords do not match')
-  }
-  else{
-   try {
-        const user = await register(formData).unwrap()
+    if (formData.password.length < 6) {
+      toast.error("Password cannot be less than 6 characters");
+    } else if (password !== confirmPassword) {
+      toast.error("Passwords do not match");
+    } else {
+      try {
+        const user = await register(formData).unwrap();
         dispatch(setCredentials(user));
-        toast.success('User registered')
-        navigate( redirect)
-     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-     } catch (err: any) {
-        toast.error(err?.data?.message || 'Invalid credentials')
-     }
-  }
-
-
-    
+        toast.success("User registered");
+        navigate(redirect);
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } catch (err: any) {
+        toast.error(err?.data?.message || "Invalid credentials");
+      }
+    }
   };
 
-
-        if (isLoading) {
-          return (
-            <div className="text-center my-5 display-3">
-              <LoadingBox />
-            </div>
-          );
-        }
+  if (isLoading) {
+    return (
+      <div className="text-center my-5 display-3">
+        <LoadingBox />
+      </div>
+    );
+  }
 
   return (
     <Container className="mt-5 " style={{ maxWidth: "600px" }}>
@@ -76,9 +68,7 @@ const Register = () => {
           <Form.Control
             type="text"
             value={name}
-            onChange={(e) =>
-              setFormData({ ...formData, name: e.target.value })
-            }
+            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
             required
           />
         </Form.Group>
@@ -118,12 +108,14 @@ const Register = () => {
             required
           />
         </Form.Group>
-
-        <Button type="submit" variant="primary" className="w-100 mt-2">
-          Register
-        </Button>
+        <div className="mb-3">
+          <Button type="submit" variant="primary" className="w-100 mt-2">
+            Register
+          </Button>
+        </div>
         <p className="text-sm-center pt-3">
-          Already have an account? <Link to={`/signin?redirect=${redirect}`}>Sign in</Link>
+          Already have an account?{" "}
+          <Link to={`/signin?redirect=${redirect}`}>Sign in</Link>
         </p>
       </Form>
     </Container>

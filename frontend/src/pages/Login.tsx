@@ -68,10 +68,12 @@ const LoginPage = () => {
           <Form.Label>Password</Form.Label>
           <Form.Control type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
         </Form.Group>
+          <div className="mb-3">
 
         <Button type="submit" variant="primary" className="w-100 mt-2"  disabled={isLoading}>
           Login
         </Button>
+          </div>
         <p className="text-sm-center mt-3">Don't have an account? <Link to={`/register?redirect=${redirect}`}>Register</Link></p>
       </Form>
     </Container>

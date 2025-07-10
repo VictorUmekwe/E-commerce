@@ -17,6 +17,7 @@ import ProductPage from "./pages/ProductPage.tsx";
 import CartPage from "./pages/CartPage.tsx";
 import LoginPage from "./pages/Login.tsx";
 import Register from "./pages/Register.tsx";
+import ShippingAddressPage from "./pages/ShippingAddressPage.tsx";
 
 
 
@@ -28,6 +29,7 @@ const router = createBrowserRouter(
          <Route path="cart" element={<CartPage />}/>
          <Route path="signin" element={<LoginPage/>}/>
          <Route path="register" element={<Register/>}/>
+         <Route path="shipping" element={<ShippingAddressPage/>}/>
     </Route>
   )
 );
