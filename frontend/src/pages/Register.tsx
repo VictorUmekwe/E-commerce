@@ -1,27 +1,36 @@
 import { Button, Container, Form } from "react-bootstrap";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRegisterMutation } from "../features/auth/authApi";
 import { setCredentials } from "../features/auth/authSlice";
-import { useAppDispatch } from "../hooks/hooks";
+import { useAppDispatch,useAppSelector } from "../hooks/hooks";
 import toast from "react-hot-toast";
 import LoadingBox from "../components/LoadingBox";
 
+
 const Register = () => {
     const dispatch = useAppDispatch()
+    const {user} = useAppSelector((state) => state.auth)
     const navigate = useNavigate()
      const {search} = useLocation()
      const redirectInUrl = new URLSearchParams(search).get('redirect')
-  const redirect = redirectInUrl ? redirectInUrl : '/'
+     const redirect = redirectInUrl ? redirectInUrl : '/'
+
+       useEffect(() => {
+    if(user){
+      navigate(redirect)
+    }
+  }, [navigate, redirect, user])
 
     const [register, {isLoading} ] = useRegisterMutation()
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     password: "",
+    confirmPassword: "",
   });
 
-  const { name, email, password } = formData;
+  const { name, email, password, confirmPassword } = formData;
 
   
 
@@ -30,7 +39,10 @@ const Register = () => {
 
     if(formData.password.length < 6){
     toast.error('Password cannot be less than 6 characters')
-  }else{
+  }else if(password !== confirmPassword) {
+    toast.error('Passwords do not match')
+  }
+  else{
    try {
         const user = await register(formData).unwrap()
         dispatch(setCredentials(user));
@@ -41,6 +53,8 @@ const Register = () => {
         toast.error(err?.data?.message || 'Invalid credentials')
      }
   }
+
+
     
   };
 
@@ -88,6 +102,18 @@ const Register = () => {
             value={password}
             onChange={(e) =>
               setFormData({ ...formData, password: e.target.value })
+            }
+            required
+          />
+        </Form.Group>
+
+        <Form.Group className="mb-3" controlId="password">
+          <Form.Label>Confirm Password</Form.Label>
+          <Form.Control
+            type="password"
+            value={confirmPassword}
+            onChange={(e) =>
+              setFormData({ ...formData, confirmPassword: e.target.value })
             }
             required
           />

@@ -1,14 +1,32 @@
-import { Badge, Button, Container, Nav, Navbar } from "react-bootstrap";
-import { Link, Outlet } from "react-router-dom";
+import { Badge, Button, Container, Nav, Navbar, NavDropdown } from "react-bootstrap";
+import { Link, Outlet, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "./hooks/hooks";
 import { toggleTheme } from "./features/theme/themeSlice";
 import { useEffect } from "react";
-import { Toaster } from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
+import { logout } from "./features/auth/authSlice";
+import { useLogoutMutation } from "./features/auth/authApi";
+
 
 const App = () => {
   const mode = useAppSelector((state) => state.theme.mode);
   const cart = useAppSelector((state) => state.cart);
+  const {user} = useAppSelector((state) => state.auth)
+  const navigate = useNavigate()
+  const [logoutUser] = useLogoutMutation()
   const dispatch = useAppDispatch();
+
+  const handleLogout = async() => {
+    try {
+      await logoutUser().unwrap()
+      dispatch(logout())
+      navigate('/signin')
+      toast.success('Logout successful!')
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (error) {
+      toast.error('Logout failed')
+    }
+  }
 
   useEffect(() => {
     document.body.setAttribute("data-bs-theme", mode);
@@ -40,9 +58,19 @@ const App = () => {
                 </Badge>
               )}
             </Link>
-            <a className="nav-link" href="/signin">
-              Sign In
-            </a>
+             {user ? (
+              <NavDropdown title={user.name} id="basic-nav-dropdown"  >
+                
+                   <Link className="dropdown-item z-3" to='#signout' onClick={handleLogout}>
+                   Logout
+                   </Link>
+              </NavDropdown>
+             ) : (
+              <Link className="nav-link" to='/signin'>
+                Login
+              </Link>
+             )}
+             {!user ? (<Link className="nav-link" to="/register">Register</Link>) : ("")}
           </Nav>
         </Navbar>
       </header>

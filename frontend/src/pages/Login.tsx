@@ -1,8 +1,8 @@
 // src/pages/LoginPage.tsx
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Form, Button, Container } from "react-bootstrap";
 import { useLoginMutation } from "../features/auth/authApi";
-import { useAppDispatch } from "../hooks/hooks";
+import { useAppDispatch, useAppSelector } from "../hooks/hooks";
 import { setCredentials } from "../features/auth/authSlice";
 import { Link, useNavigate, useLocation} from "react-router-dom";
 import toast from "react-hot-toast";
@@ -17,6 +17,15 @@ const LoginPage = () => {
   const {search} = useLocation()
   const redirectInUrl = new URLSearchParams(search).get('redirect')
   const redirect = redirectInUrl ? redirectInUrl : '/'
+
+  const {user} = useAppSelector((state) => state.auth)
+ 
+
+  useEffect(() => {
+    if(user){
+      navigate(redirect)
+    }
+  }, [navigate,redirect, user])
 
   const submitHandler = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -45,7 +54,11 @@ const LoginPage = () => {
   
     <Container className="mt-5" style={{ maxWidth: "600px" }}>
       <h2 className="my-3 fw-bold">Sign In</h2>
+<<<<<<< HEAD
       <Form onSubmit={submitHandler} className="card p-3 shadow">
+=======
+      <Form onSubmit={submitHandler} className="card p-3 shadow"  >
+>>>>>>> e758399 (updated login and register page)
         <Form.Group className="mb-3" controlId="email">
           <Form.Label>Email</Form.Label>
           <Form.Control type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
