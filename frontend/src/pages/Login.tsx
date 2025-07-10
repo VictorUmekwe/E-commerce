@@ -53,12 +53,8 @@ const LoginPage = () => {
   return (
   
     <Container className="mt-5" style={{ maxWidth: "600px" }}>
-      <h2 className="my-3 fw-bold">Sign In</h2>
-<<<<<<< HEAD
-      <Form onSubmit={submitHandler} className="card p-3 shadow">
-=======
-      <Form onSubmit={submitHandler} className="card p-3 shadow"  >
->>>>>>> e758399 (updated login and register page)
+<h2 className="my-3 fw-bold">Sign In</h2>
+<Form onSubmit={submitHandler} className="card p-3 shadow">
         <Form.Group className="mb-3" controlId="email">
           <Form.Label>Email</Form.Label>
           <Form.Control type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />

@@ -1,4 +1,11 @@
-import { Badge, Button, Container, Nav, Navbar, NavDropdown } from "react-bootstrap";
+import {
+  Badge,
+  Button,
+  Container,
+  Nav,
+  Navbar,
+  NavDropdown,
+} from "react-bootstrap";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "./hooks/hooks";
 import { toggleTheme } from "./features/theme/themeSlice";
@@ -7,26 +14,25 @@ import toast, { Toaster } from "react-hot-toast";
 import { logout } from "./features/auth/authSlice";
 import { useLogoutMutation } from "./features/auth/authApi";
 
-
 const App = () => {
   const mode = useAppSelector((state) => state.theme.mode);
   const cart = useAppSelector((state) => state.cart);
-  const {user} = useAppSelector((state) => state.auth)
-  const navigate = useNavigate()
-  const [logoutUser] = useLogoutMutation()
+  const { user } = useAppSelector((state) => state.auth);
+  const navigate = useNavigate();
+  const [logoutUser] = useLogoutMutation();
   const dispatch = useAppDispatch();
 
-  const handleLogout = async() => {
+  const handleLogout = async () => {
     try {
-      await logoutUser().unwrap()
-      dispatch(logout())
-      navigate('/signin')
-      toast.success('Logout successful!')
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      await logoutUser().unwrap();
+      dispatch(logout());
+      navigate("/signin");
+      toast.success("Logout successful!");
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
-      toast.error('Logout failed')
+      toast.error("Logout failed");
     }
-  }
+  };
 
   useEffect(() => {
     document.body.setAttribute("data-bs-theme", mode);
@@ -46,7 +52,7 @@ const App = () => {
               <Navbar.Brand>Bahddest Collections</Navbar.Brand>
             </Link>
           </Container>
-          <Nav>
+          <Nav className="position-relative">
             <Button variant={mode} onClick={handleToggle}>
               <i className={mode === "light" ? "fa fa-sun" : "fa fa-moon"} />
             </Button>
@@ -58,19 +64,28 @@ const App = () => {
                 </Badge>
               )}
             </Link>
-             {user ? (
-              <NavDropdown title={user.name} id="basic-nav-dropdown"  >
-                
-                   <Link className="dropdown-item z-3" to='#signout' onClick={handleLogout}>
-                   Logout
-                   </Link>
+            {user ? (
+              <NavDropdown title={user.name} id="user-nav-dropdown" menuVariant={mode} align="end" className="z-3 w-25">
+                <Link
+                  className="dropdown-item"
+                  to="#signout"
+                  onClick={handleLogout}
+                >
+                  Logout
+                </Link>
               </NavDropdown>
-             ) : (
-              <Link className="nav-link" to='/signin'>
+            ) : (
+              <Link className="nav-link" to="/signin">
                 Login
               </Link>
-             )}
-             {!user ? (<Link className="nav-link" to="/register">Register</Link>) : ("")}
+            )}
+            {!user ? (
+              <Link className="nav-link" to="/register">
+                Register
+              </Link>
+            ) : (
+              ""
+            )}
           </Nav>
         </Navbar>
       </header>
