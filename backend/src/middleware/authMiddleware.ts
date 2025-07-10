@@ -36,5 +36,14 @@ const protect = expressAsyncHandler(
     }
   }
 );
+//Admin middleware
+const admin = (req:AuthenticateRequest, res:Response, next:NextFunction) => {
+    if(req.user && req.user.isAdmin){
+      next()
+    }else{
+      res.status(403)
+      throw new Error('Not authorized')
+    }
+}
 
-export { protect };
+export { protect, admin};
