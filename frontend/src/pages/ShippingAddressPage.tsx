@@ -31,7 +31,7 @@ const ShippingAddressPage = () => {
   const submitHandler = (e: React.FormEvent) => {
        e.preventDefault()
        
-       if(!fullName || ! address || !city || !postalCode || !country){
+       if(!fullName || !address || !city || !postalCode || !country){
         toast.error('Please fill out fields');
         return;
        }

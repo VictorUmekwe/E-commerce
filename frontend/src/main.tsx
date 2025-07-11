@@ -19,19 +19,20 @@ import LoginPage from "./pages/Login.tsx";
 import Register from "./pages/Register.tsx";
 import ShippingAddressPage from "./pages/ShippingAddressPage.tsx";
 import PaymentMethodPage from "./pages/PaymentMethodPage.tsx";
-
-
+import ProtectedRoute from "./components/ProtectedRoute.tsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
-    <Route path="/" element={<App />} >
-         <Route index element={<HomePage/>}/>
-         <Route path='product/:slug' element={<ProductPage/>}/>
-         <Route path="cart" element={<CartPage />}/>
-         <Route path="signin" element={<LoginPage/>}/>
-         <Route path="register" element={<Register/>}/>
-         <Route path="shipping" element={<ShippingAddressPage/>}/>
-         <Route path="payment" element={<PaymentMethodPage/>}/>
+    <Route path="/" element={<App />}>
+      <Route index element={<HomePage />} />
+      <Route path="product/:slug" element={<ProductPage />} />
+      <Route path="cart" element={<CartPage />} />
+      <Route path="signin" element={<LoginPage />} />
+      <Route path="register" element={<Register />} />
+      <Route path="" element={<ProtectedRoute />}>
+        <Route path="shipping" element={<ShippingAddressPage />} />
+        <Route path="payment" element={<PaymentMethodPage />} />
+      </Route>
     </Route>
   )
 );

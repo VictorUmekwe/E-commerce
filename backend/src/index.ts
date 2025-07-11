@@ -9,6 +9,7 @@ import { errorHandler, notFound } from './middleware/errorMiddleware';
 import { seedRouter } from './routes/seedRoutes';
 import cookieParser from 'cookie-parser'
 import { authRoute } from './routes/authRoutes';
+import { orderRoutes } from './routes/orderRoutes';
 
 const app = express();
 const PORT = process.env.PORT || 5001;
@@ -25,6 +26,7 @@ app.use(cookieParser())
 app.use(morgan('dev'));
 app.use('/api/products', productRoute)
 app.use('/api/auth', authRoute)
+app.use('/api/order', orderRoutes)
 app.use('/api/seed', seedRouter)
 
 app.use(notFound)
