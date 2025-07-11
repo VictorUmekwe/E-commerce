@@ -35,13 +35,7 @@ const ShippingAddressPage = () => {
         toast.error('Please fill out fields');
         return;
        }
-       dispatch(saveShippingAddress({
-        fullName,
-        address,
-        city,
-        postalCode,
-        country,
-       }))
+       dispatch(saveShippingAddress(formData))
        navigate('/payment')
   }
 
@@ -51,7 +45,7 @@ const ShippingAddressPage = () => {
         <CheckoutSteps step1 step2 ></CheckoutSteps>
         <div className="small-container container">
             <h1 className=" my-3">Shipping Address</h1>
-            <Form onSubmit={submitHandler}>
+            <Form onSubmit={submitHandler} className="card shadow p-4">
                 <Form.Group className="mb-3" controlId="fullName">
                   <Form.Label>Full Name</Form.Label>
                   <Form.Control type="text" value={fullName} onChange={(e) => setFormData({...formData, fullName: e.target.value})}/>
