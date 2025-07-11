@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { saveShippingAddress } from "../features/cart/cartSlice";
 import CheckoutSteps from "../components/CheckoutSteps";
 import { Button, Form } from "react-bootstrap";
+import toast from "react-hot-toast";
 
 const ShippingAddressPage = () => {
   const navigate = useNavigate();
@@ -27,8 +28,13 @@ const ShippingAddressPage = () => {
 
   const {fullName, address, city, postalCode, country} = formData
 
-  const submitHandler = async(e: React.FormEvent) => {
+  const submitHandler = (e: React.FormEvent) => {
        e.preventDefault()
+       
+       if(!fullName || ! address || !city || !postalCode || !country){
+        toast.error('Please fill out fields');
+        return;
+       }
        dispatch(saveShippingAddress({
         fullName,
         address,
@@ -36,9 +42,9 @@ const ShippingAddressPage = () => {
         postalCode,
         country,
        }))
+       navigate('/payment')
   }
 
-  navigate('/payment')
 
   return (
     <div>
