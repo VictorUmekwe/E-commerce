@@ -2,6 +2,7 @@ import mongoose, { Document, Schema } from "mongoose";
 import { IUser } from "./UserModel";
 import { IProduct } from "./ProductModel";
 
+
 export interface IOrderItem {
   name: string;
   quantity: number;

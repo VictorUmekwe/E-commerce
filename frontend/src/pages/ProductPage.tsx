@@ -70,7 +70,7 @@ const ProductPage = () => {
         </Col>
 
         <Col md={3}>
-          <ListGroup>
+          <ListGroup className="shadow">
             <ListGroup.Item>
               <h1>{product.name}</h1>
             </ListGroup.Item>
@@ -86,7 +86,7 @@ const ProductPage = () => {
         </Col>
 
         <Col md={3}>
-          <Card>
+          <Card className="shadow">
             <Card.Body>
               <ListGroup variant="flush">
                 <ListGroup.Item>
